@@ -1,0 +1,33 @@
+{
+  "name": "use-module",
+  "version": "1.0.0",
+  "description": "angularjs-style DI for nodemodules",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "bin": {
+    "use-module": "cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/stoeffel/use-module"
+  },
+  "keywords": [
+    "cli"
+  ],
+  "author": "stoeffel",
+  "license": "MIT",
+  "bugs": {
+    "url": "http://github.com/stoeffel/use-module/issues"
+  },
+  "homepage": "http://github.com/stoeffel/use-module",
+  "devDependencies": {
+    "mocha": "~1.20.1",
+    "mockery": "~1.4.0"
+  },
+  "dependencies": {
+    "minimist": "*",
+    "retrieve-arguments": "~1.0.0"
+  }
+}
