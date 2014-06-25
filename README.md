@@ -24,7 +24,13 @@ Installation
 API
 ---
 
+### use
+Use this function to inject modules into your module.
 `use(function callback, Object mappings)`
+
+### override
+Use override in your tests to mock a module
+
 `use.override(String moduleName, Object module)`
 
 Usage
