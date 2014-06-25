@@ -8,6 +8,12 @@ Installation
 
 `npm install use-module`
 
+API
+---
+
+`use(function callback, Object mappings)`
+`use.override(String moduleName, Object module)`
+
 Usage
 -----
 
@@ -29,10 +35,21 @@ Usage
   });
 
   // mock a dependency
-  use.that('fs', {
-    readFile: function() {
+  use.override('fs', {
+    readFile: function(filename, options, callback) {
+      callback(null, 'hello');
     }
+  }).override('path', {
+    /*...*/
   });
-  use(function(fs){
+  use(function(fs, path) {
+    fs.readFile('./README.md', { encoding: 'utf-8' }, function(err, data) {
+      if (err) {
+        throw err;
+      }
+      assert.equal(data, 'hello');
+      done();
+    });
   });
 ```
+

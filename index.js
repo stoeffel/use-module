@@ -1,7 +1,8 @@
 var retrieveArguments = require('retrieve-arguments'),
-    overrides = {};
+    overrides = {},
+    use;
 
-module.exports = function(callback, mappings) {
+module.exports = use = function(callback, mappings) {
   if (!isFunction(callback)) {
     throw new Error('No callback defined');
   }
@@ -16,8 +17,9 @@ module.exports = function(callback, mappings) {
   callback.apply(this, modules);
 };
 
-module.exports.that = function(module, mapping) {
+module.exports.override = function(module, mapping) {
   overrides[module] = mapping;
+  return use;
 };
 
 function mapName(mappings, name) {

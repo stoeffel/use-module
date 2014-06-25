@@ -75,18 +75,21 @@ describe('use-module', function() {
   });
 
   it('should require the mocked module', function() {
-    use.that('module1', {
+    use.override('module1', {
+      mocked: true
+    }).override('module2', {
       mocked: true
     });
 
-    use(function(module1) {
+    use(function(module1, module2) {
       assert.ok(!module1.success);
       assert.ok(module1.mocked);
+      assert.ok(module2.mocked);
     });
   });
 
   it('should mock the readFile function', function(done) {
-    use.that('fs', {
+    use.override('fs', {
       readFile: function(filename, options, callback) {
         callback(null, 'hello');
       }
