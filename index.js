@@ -1,17 +1,11 @@
 var retrieveArguments = require('retrieve-arguments'),
-    overrides = {},
-    use;
+    overrides = {}, use;
 
 module.exports = use = function(callback, mappings) {
-  if (!isFunction(callback)) {
-    throw new Error('No callback defined');
-  }
+  checkCallback(callback);
   var moduleNames = retrieveArguments(callback),
     modules = moduleNames.map(function(moduleName) {
-      if (overrides[moduleName]) {
-        return overrides[moduleName];
-      }
-      return require(mapName(mappings, moduleName));
+      return overrides[moduleName] || require(mapName(mappings, moduleName));
     });
 
   callback.apply(this, modules);
@@ -22,14 +16,17 @@ module.exports.override = function(module, mapping) {
   return use;
 };
 
-function mapName(mappings, name) {
-  mappings = mappings || {};
-  if (mappings[name]) {
-    return mappings[name];
+function checkCallback(callback) {
+  if (!isFunction(callback)) {
+    throw new Error('No callback defined');
   }
-  return name;
 }
 
 function isFunction(func) {
   return typeof func === 'function';
+}
+
+function mapName(mappings, name) {
+  mappings = mappings || {};
+  return mappings[name] || name;
 }
