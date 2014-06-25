@@ -11,7 +11,7 @@ describe('use-module', function() {
       warnOnReplace: false,
       warnOnUnregistered: false
     });
-    mockery.registerMock('mock', stub);
+    mockery.registerMock('mock1', stub);
     mockery.registerMock('mock2', stub);
   });
 
@@ -34,14 +34,14 @@ describe('use-module', function() {
   });
 
   it('should require a module using a given argument', function() {
-    useModule(function(mock) {
-      assert.ok(mock.success);
+    useModule(function(mock1) {
+      assert.ok(mock1.success);
     });
   });
 
   it('should require multible modules using a given arguments', function() {
-    useModule(function(mock, mock2) {
-      assert.ok(mock.success);
+    useModule(function(mock1, mock2) {
+      assert.ok(mock1.success);
       assert.ok(mock2.success);
     });
   });
@@ -60,5 +60,17 @@ describe('use-module', function() {
 
   it('should fail if a module is not found', function() {
     assert.throws(useModule.bind(this, function(unknown) {}), Error);
+  });
+
+
+  it('should map module names', function() {
+    useModule(function(mapped1, mapped2, mock1) {
+      assert.ok(mapped1.success);
+      assert.ok(mapped2.success);
+      assert.ok(mock1.success);
+    }, {
+      mapped1: 'mock1',
+      mapped2: 'mock2'
+    });
   });
 });

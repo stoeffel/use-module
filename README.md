@@ -20,4 +20,9 @@ Usage
       console.log(data);
     });
   });
+
+  useModule(function(_, fs, request, winston){
+  }, {
+    _: 'underscore'
+  });
 ```
