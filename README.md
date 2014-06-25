@@ -14,12 +14,10 @@ Usage
 ```js
   var useModule = require('use-module');
 
-  useModule(); // =>
-```
-
-CLI
----
-
-```bash
-  $ use-module
+  useModule(function(fs, path){
+    fs.readFile(path.join('foo', 'bar', 'test.md'), function (err, data) {
+      if (err) throw err;
+      console.log(data);
+    });
+  });
 ```

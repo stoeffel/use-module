@@ -1,6 +1,9 @@
 var useModule = require('./index.js'),
   mockery = require('mockery'),
-  assert = require('assert');
+  assert = require('assert'),
+  stub = {
+    success: true
+  };
 
 describe('use-module', function() {
   beforeEach(function() {
@@ -8,12 +11,12 @@ describe('use-module', function() {
       warnOnReplace: false,
       warnOnUnregistered: false
     });
-    mockery.registerMock('mock', {
-      success: true
-    });
-    mockery.registerMock('mock2', {
-      success: true
-    });
+    mockery.registerMock('mock', stub);
+    mockery.registerMock('mock2', stub);
+  });
+
+  afterEach(function() {
+    mockery.disable();
   });
 
   it('should be ready for some hacking', function() {
@@ -41,5 +44,21 @@ describe('use-module', function() {
       assert.ok(mock.success);
       assert.ok(mock2.success);
     });
+  });
+
+  it('should read the readme', function(done) {
+    useModule(function(fs, path) {
+      fs.readFile('./README.md', { encoding: 'utf-8' }, function(err, data) {
+        if (err) {
+          throw err;
+        }
+        assert.equal(path.extname('README.md'), '.md');
+        done();
+      });
+    });
+  });
+
+  it('should fail if a module is not found', function() {
+    assert.throws(useModule.bind(this, function(unknown) {}), Error);
   });
 });
