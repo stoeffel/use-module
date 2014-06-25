@@ -12,17 +12,27 @@ Usage
 -----
 
 ```js
-  var useModule = require('use-module');
+  var use = require('use-module');
 
-  useModule(function(fs, path){
+  // inject modules
+  use(function(fs, path){
     fs.readFile(path.join('foo', 'bar', 'test.md'), function (err, data) {
       if (err) throw err;
       console.log(data);
     });
   });
 
-  useModule(function(_, fs, request, winston){
+  // map module name
+  use(function(_, fs, request, winston){
   }, {
     _: 'underscore'
+  });
+
+  // mock a dependency
+  use.that('fs', {
+    readFile: function() {
+    }
+  });
+  use(function(fs){
   });
 ```
