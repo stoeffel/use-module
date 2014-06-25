@@ -26,6 +26,7 @@ API
 
 ### use
 Use this function to inject modules into your module.
+
 `use(function callback, Object mappings)`
 
 ### override
