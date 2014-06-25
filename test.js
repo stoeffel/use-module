@@ -84,4 +84,21 @@ describe('use-module', function() {
       assert.ok(module1.mocked);
     });
   });
+
+  it('should mock the readFile function', function(done) {
+    use.that('fs', {
+      readFile: function(filename, options, callback) {
+        callback(null, 'hello');
+      }
+    });
+    use(function(fs, path) {
+      fs.readFile('./README.md', { encoding: 'utf-8' }, function(err, data) {
+        if (err) {
+          throw err;
+        }
+        assert.equal(data, 'hello');
+        done();
+      });
+    });
+  });
 });
