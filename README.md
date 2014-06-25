@@ -3,6 +3,19 @@ use-module
 
 > angularjs-style DI for nodemodules
 
+### from
+```js
+var _ = require('underscore');
+var fs = require('fs');
+var path = require('path');
+var winston = require('winston');
+```
+### to
+```js
+use(function(underscore, fs, path, winston) {
+});
+```
+
 Installation
 ------------
 
