@@ -14,14 +14,17 @@ describe('use-module', function() {
     mockery.registerMock('module1', stub);
     mockery.registerMock('module2', stub);
     mockery.registerMock('module-dashed', stub);
-    mockery.registerMock('./util', stub);
-    mockery.registerMock('./core', stub);
-    mockery.registerMock('../outside', stub);
-    mockery.registerMock('../', stub);
+    mockery.registerMock(__dirname + '/util', stub);
+    mockery.registerMock(__dirname + '/core', stub);
   });
 
   afterEach(function() {
     mockery.disable();
+  });
+
+  it('should set the basedir', function() {
+    use.init(__dirname);
+    assert.ok(true);
   });
 
   it('should be ready for some hacking', function() {
@@ -45,6 +48,9 @@ describe('use-module', function() {
   });
 
   it('should require multible modules using a given arguments', function() {
+    use(function(module1) {
+      assert.ok(module1.success);
+    });
     use(function(module1, module2, moduleDashed) {
       assert.ok(module1.success);
       assert.ok(module2.success);
@@ -118,12 +124,4 @@ describe('use-module', function() {
     });
   });
 
-  it('should require a local module', function() {
-    use(function($util, $core, $$outside, $$) {
-      assert.ok($util.success);
-      assert.ok($core.success);
-      assert.ok($$outside.success);
-      assert.ok($$.success);
-    });
-  });
 });

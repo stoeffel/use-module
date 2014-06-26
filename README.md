@@ -38,6 +38,12 @@ Usage
 -----
 
 ```js
+// setup your base folder in the root of your module
+var use = require('use-module');
+use.init(__dirname); // this also clears all overriden modules.
+```
+
+```js
   var use = require('use-module');
 
   // inject modules

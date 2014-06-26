@@ -1,6 +1,6 @@
 var retrieveArguments = require('retrieve-arguments'),
     path = require('path'),
-    overrides = {}, use;
+    overrides = {}, use, baseDir;
 
 module.exports = use = function(callback, mappings) {
   checkCallback(callback);
@@ -10,6 +10,12 @@ module.exports = use = function(callback, mappings) {
     });
 
   callback.apply(this, modules);
+};
+
+module.exports.init = function(theBaseDir) {
+  baseDir = theBaseDir;
+  overrides = {};
+  return use;
 };
 
 module.exports.override = function(module, mapping) {
@@ -34,6 +40,7 @@ function mapName(mappings, name) {
   if (name[0] === '.') {
     name = name.replace(/\.([a-zA-Z])/g,'./$1');
     name = name.replace(/\.$/g,'./');
+    name = path.join(baseDir, name);
   } else {
     name = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   }
