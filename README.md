@@ -49,9 +49,17 @@ Usage
   });
 
   // map module name
-  use(function(_, fs, request, winston){
+  use(function(_, _s, fs, request, winston, cliColor){ 
+    // camelcase is converted to dashed
   }, {
-    _: 'underscore'
+    _: 'underscore',
+    _s: 'underscore.string'
+  });
+
+  // inject local modules
+  use(function($util, $$){ 
+    // == require('./util/');
+    // == require('../');
   });
 
   // mock a dependency

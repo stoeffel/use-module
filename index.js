@@ -1,4 +1,5 @@
 var retrieveArguments = require('retrieve-arguments'),
+    path = require('path'),
     overrides = {}, use;
 
 module.exports = use = function(callback, mappings) {
@@ -27,6 +28,15 @@ function isFunction(func) {
 }
 
 function mapName(mappings, name) {
+  var index;
   mappings = mappings || {};
+  name = name.replace(/\$/g,'.');
+  if (name[0] === '.') {
+    name = name.replace(/\.([a-zA-Z])/g,'./$1');
+    name = name.replace(/\.$/g,'./');
+  } else {
+    name = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
+  }
   return mappings[name] || name;
 }
+

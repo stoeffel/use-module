@@ -13,6 +13,11 @@ describe('use-module', function() {
     });
     mockery.registerMock('module1', stub);
     mockery.registerMock('module2', stub);
+    mockery.registerMock('module-dashed', stub);
+    mockery.registerMock('./util', stub);
+    mockery.registerMock('./core', stub);
+    mockery.registerMock('../outside', stub);
+    mockery.registerMock('../', stub);
   });
 
   afterEach(function() {
@@ -40,9 +45,10 @@ describe('use-module', function() {
   });
 
   it('should require multible modules using a given arguments', function() {
-    use(function(module1, module2) {
+    use(function(module1, module2, moduleDashed) {
       assert.ok(module1.success);
       assert.ok(module2.success);
+      assert.ok(moduleDashed.success);
     });
   });
 
@@ -102,6 +108,22 @@ describe('use-module', function() {
         assert.equal(data, 'hello');
         done();
       });
+    });
+  });
+
+  it('should require a local module', function() {
+    use(function($util, $core) {
+      assert.ok($util.success);
+      assert.ok($core.success);
+    });
+  });
+
+  it('should require a local module', function() {
+    use(function($util, $core, $$outside, $$) {
+      assert.ok($util.success);
+      assert.ok($core.success);
+      assert.ok($$outside.success);
+      assert.ok($$.success);
     });
   });
 });

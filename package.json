@@ -1,6 +1,6 @@
 {
   "name": "use-module",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "angularjs-style DI for nodemodules",
   "main": "index.js",
   "scripts": {
