@@ -24,7 +24,8 @@
   "homepage": "http://github.com/stoeffel/use-module",
   "devDependencies": {
     "mocha": "~1.20.1",
-    "mockery": "~1.4.0"
+    "mockery": "~1.4.0",
+    "lodash": "~2.4.1"
   },
   "dependencies": {
     "retrieve-arguments": "~1.0.0"

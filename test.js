@@ -16,15 +16,12 @@ describe('use-module', function() {
     mockery.registerMock('module-dashed', stub);
     mockery.registerMock(__dirname + '/util', stub);
     mockery.registerMock(__dirname + '/core', stub);
+
+    use.init(__dirname);
   });
 
   afterEach(function() {
     mockery.disable();
-  });
-
-  it('should set the basedir', function() {
-    use.init(__dirname);
-    assert.ok(true);
   });
 
   it('should be ready for some hacking', function() {

@@ -1,25 +1,30 @@
 var retrieveArguments = require('retrieve-arguments'),
-    path = require('path'),
-    overrides = {}, use, baseDir;
+  path = require('path'),
+  use, baseDir;
+
 
 module.exports = use = function(callback, mappings) {
+  if (!baseDir) {
+    throw new Error('you should call init');
+  }
   checkCallback(callback);
   var moduleNames = retrieveArguments(callback),
     modules = moduleNames.map(function(moduleName) {
-      return overrides[moduleName] || require(mapName(mappings, moduleName));
+      return use.overrides[moduleName] || require(mapName(mappings, moduleName));
     });
 
   callback.apply(this, modules);
 };
+global.use = use;
 
 module.exports.init = function(theBaseDir) {
   baseDir = theBaseDir;
-  overrides = {};
+  use.overrides = {};
   return use;
 };
 
 module.exports.override = function(module, mapping) {
-  overrides[module] = mapping;
+  use.overrides[module] = mapping;
   return use;
 };
 
@@ -35,15 +40,28 @@ function isFunction(func) {
 
 function mapName(mappings, name) {
   var index;
-  mappings = mappings || {};
-  name = name.replace(/\$/g,'.');
+  use.mappings = mergeObjects(use.mappings, mappings || {});
+  name = name.replace(/\$/g, '.');
   if (name[0] === '.') {
-    name = name.replace(/\.([a-zA-Z])/g,'./$1');
-    name = name.replace(/\.$/g,'./');
+    name = name.replace(/\.([a-zA-Z])/g, './$1');
+    name = name.replace(/\.$/g, './');
+    if (use.mappings['$']) {
+      name = name.replace(/\./g, use.mappings['$']);
+    }
     name = path.join(baseDir, name);
   } else {
     name = name.replace(/([a-z])([A-Z])/g, '$1-$2').toLowerCase();
   }
-  return mappings[name] || name;
+  return use.mappings[name] || name;
 }
 
+function mergeObjects(obj1, obj2) {
+  var obj3 = {};
+  for (var attrname in obj1) {
+    obj3[attrname] = obj1[attrname];
+  }
+  for (var attrname in obj2) {
+    obj3[attrname] = obj2[attrname];
+  }
+  return obj3;
+}
