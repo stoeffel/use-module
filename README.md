@@ -24,6 +24,11 @@ Installation
 API
 ---
 
+### init
+Use this function to set the root of your module.
+
+`use.init(String folder)`
+
 ### use
 Use this function to inject modules into your module.
 
@@ -37,15 +42,16 @@ Use override in your tests to mock a module
 Usage
 -----
 
+Make sure you checkout the examples.
+
+1. Setup
 ```js
 // setup your base folder in the root of your module
-var use = require('use-module');
+require('use-module'); creates a global 'use'
 use.init(__dirname); // this also clears all overriden modules.
 ```
 
 ```js
-  var use = require('use-module');
-
   // inject modules
   use(function(fs, path){
     fs.readFile(path.join('foo', 'bar', 'test.md'), function (err, data) {
@@ -64,7 +70,7 @@ use.init(__dirname); // this also clears all overriden modules.
 
   // inject local modules
   use(function($util, $$){ 
-    // == require('./util/');
+    // == require('./util.js');
     // == require('../');
   });
 
@@ -75,15 +81,6 @@ use.init(__dirname); // this also clears all overriden modules.
     }
   }).override('path', {
     /*...*/
-  });
-  use(function(fs, path) {
-    fs.readFile('./README.md', { encoding: 'utf-8' }, function(err, data) {
-      if (err) {
-        throw err;
-      }
-      assert.equal(data, 'hello');
-      done();
-    });
   });
 ```
 
